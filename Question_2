@@ -1,0 +1,84 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp8
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+
+            //string S = "13 DUP 4 POP 5 DUP + DUP + -";
+            string S = "1048575 DUP +";
+            string[] subs = S.Split(' ');
+            Stack<int> newstack = new Stack<int>();
+            string return_value = "valid";
+                     
+            for (int i = 0; i < subs.Length; i++)
+            {
+
+                if (subs[i] != "-" && subs[i] != "+" && subs[i] != "DUP" && subs[i] != "POP")
+                {
+                    newstack.Push(int.Parse(subs[i]));
+                    
+                }
+                else if (subs[i] == "-")
+                {
+                    if (newstack.Count <= 1)
+                    {
+                        return_value = "invalid";
+                        break;
+                    }
+                    else
+                    {
+                        int newno = newstack.Pop() - newstack.Pop();
+                        if(newno<0)
+                        {
+                            return_value = "invalid";
+                            break;
+                        }
+                        else
+                        {
+                            newstack.Push(newno);
+                        }                       
+
+                    }
+                    
+                }
+                else if (subs[i] == "+")
+                {
+                    newstack.Push(newstack.Pop() + newstack.Pop());
+                    
+                }
+                else if (subs[i] == "DUP")
+                {
+                    newstack.Push(newstack.Peek());
+                    
+                }
+                else if (subs[i] == "POP")
+                {
+                    newstack.Pop();
+                    
+                }
+                                               
+            }
+
+        
+            int peek;
+            if(return_value=="invalid" || newstack.Peek() >= Math.Pow(2, 20))
+            {
+                peek = -1;
+            }
+            else
+            {
+                peek = newstack.Peek();
+            }
+            
+            Console.WriteLine(peek);           
+
+        }
+    }
+}
